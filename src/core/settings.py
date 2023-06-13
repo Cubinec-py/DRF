@@ -54,6 +54,9 @@ DOWNLOADED = [
 
 PROJECT_APPS = [
     'user_auth',
+    'api.location',
+    'api.truck',
+    'api.cargo',
 ]
 
 INSTALLED_APPS = DEFAULT_APPS + DOWNLOADED + PROJECT_APPS
@@ -144,7 +147,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        # 'rest_framework_simplejwt.authentication.JWTAuthentication',
     ]
 }
 
