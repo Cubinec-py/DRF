@@ -1,5 +1,5 @@
 from django.db import models
-from api.location.models import Location
+from src.api.location.models import Location
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 
@@ -26,10 +26,12 @@ class Cargo(models.Model):
             ),
         ],
         verbose_name='Cargo load capacity',
+        help_text='Cargo load capacity must be between 1 and 10000',
     )
     description = models.TextField(
         max_length=250,
         verbose_name='Cargo description',
+        help_text='Description of cargo',
     )
 
     class Meta:

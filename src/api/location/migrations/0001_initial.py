@@ -4,12 +4,12 @@ import csv
 import django.core.validators
 from django.db import migrations, models
 
-from api.location.models import Location
+from src.api.location.models import Location
 
 
 def forward_func(apps, schema_editor):
     locations = []
-    with open('uszips.csv', newline='') as file:
+    with open('src/uszips.csv', newline='') as file:
         spamreader = csv.DictReader(file)
         for row in spamreader:
             locations.append(
@@ -26,7 +26,7 @@ def forward_func(apps, schema_editor):
 
 def reverse_func(apps, schema_editor):
     locations = []
-    with open('uszips.csv', newline='') as file:
+    with open('src/uszips.csv', newline='') as file:
         spamreader = csv.DictReader(file)
         for row in spamreader:
             locations.append(

@@ -6,8 +6,8 @@ import django.db.models.deletion
 from django.db import migrations, models
 from random import randint, choice
 
-from api.truck.models import Truck
-from api.location.models import Location
+from src.api.truck.models import Truck
+from src.api.location.models import Location
 
 
 def forward_func(apps, schema_editor):

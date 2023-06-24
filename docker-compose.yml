@@ -1,0 +1,86 @@
+version: "3.8"
+
+services:
+  drf_app:
+    container_name: drf_app
+    restart: on-failure
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    ports:
+      - "8001:8001"
+    depends_on:
+      - db
+    networks:
+      - app_network
+    volumes:
+      - .:/drf_app
+
+  db:
+    container_name: db
+    restart: on-failure
+    image: postgres:15
+    expose:
+      - 5433
+    ports:
+      - "5433:5432"
+    networks:
+      - app_network
+    volumes:
+      - db:/var/lib/postgresql/data
+    env_file:
+      - .env.dev
+
+  redis_drf:
+    container_name: redis_drf
+    image: redis:7.2-rc1-alpine
+    restart: on-failure
+    ports:
+      - "6380:6380"
+    networks:
+      - app_network
+    expose:
+      - 6380
+
+  celery_drf:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: celery_drf
+    restart: always
+    networks:
+      - app_network
+    volumes:
+      - .:/drf_app
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    env_file:
+      - .env.dev
+    depends_on:
+      - redis_drf
+      - flower_drf
+      - db
+      - drf_app
+    command: ["docker/celery.sh"]
+
+  flower_drf:
+    image: mher/flower:latest
+    container_name: flower_drf
+    networks:
+      - app_network
+    depends_on:
+      - redis_drf
+    ports:
+      - "5577:5577"
+    volumes:
+      - .:/drf_app
+    environment:
+      - CELERY_BROKER_URL=redis_drf://redis_drf:6380/0
+      - CELERY_RESULT_BACKEND=redis_drf://redis_drf:6380/0
+      - FLOWER_PORT=5577
+
+networks:
+  app_network:
+volumes:
+  db:

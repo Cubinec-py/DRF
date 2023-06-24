@@ -1,6 +1,7 @@
 from django.db import models
-from api.location.models import Location
 from django.core.validators import MaxValueValidator, MinValueValidator
+
+from src.api.location.models import Location
 
 
 class Truck(models.Model):
@@ -29,6 +30,7 @@ class Truck(models.Model):
             )
         ],
         verbose_name='Truck load capacity',
+        help_text='Truck load capacity must be between 1 and 10000'
     )
 
     class Meta:
