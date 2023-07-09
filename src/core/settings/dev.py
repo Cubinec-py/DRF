@@ -1,6 +1,9 @@
-from src.core.settings.base import *
+from core.settings.base import *
 
 load_dotenv('.env.dev')
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = os.environ.get('PROJECT_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -28,6 +31,12 @@ CELERY_TASK_TIME_LIMIT = 30 * 60
 REDIS_URL = os.environ.get('REDIS_URL')
 REDIS_CACHE = os.environ.get('REDIS_CACHE')
 
-BROKER_URL = REDIS_URL
-CELERY_result_backend = REDIS_URL
-CELERY_BROKER_URL = BROKER_URL
+CELERY_RESULT_BACKEND = REDIS_URL
+CELERY_BROKER_URL = REDIS_URL
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': f'{REDIS_CACHE}',
+    }
+}

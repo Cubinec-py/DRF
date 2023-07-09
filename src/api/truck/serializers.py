@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
-from src.api.truck.models import Truck
-from src.api.location.serializers import ZipCodeField
+from api.truck.models import Truck
+from api.location.serializers import ZipCodeField
 
 
 class TruckSerializer(serializers.ModelSerializer):

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from src.api.location.models import Location
+from api.location.models import Location
 
 
 class ZipCodeField(serializers.CharField):

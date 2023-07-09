@@ -7,7 +7,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
-from src.user_auth.serializers import SignUpSerializer
+from user_auth.serializers import SignUpSerializer
 
 
 @extend_schema(

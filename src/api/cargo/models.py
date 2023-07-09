@@ -1,5 +1,5 @@
 from django.db import models
-from src.api.location.models import Location
+from api.location.models import Location
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 

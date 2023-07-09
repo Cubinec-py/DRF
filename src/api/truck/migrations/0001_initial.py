@@ -6,42 +6,33 @@ import django.db.models.deletion
 from django.db import migrations, models
 from random import randint, choice
 
-from src.api.truck.models import Truck
-from src.api.location.models import Location
+from api.truck.models import Truck
+from api.location.models import Location
 
 
 def forward_func(apps, schema_editor):
     trucks = []
+    number = set()
     for _ in range(500):
         truck_num = randint(1000, 9999)
         truck_letter = chr(randint(ord('A'), ord('Z')))
         load_capacity = randint(1, 10000)
         location_id = choice(Location.objects.all().values_list('id', flat=True))
-        trucks.append(
-            Truck(
-                number=f'{truck_num}{truck_letter}',
-                load_capacity=load_capacity,
-                location_id=location_id
+        truck_number = f'{truck_num}{truck_letter}'
+        if truck_number not in number:
+            number.add(truck_number)
+            trucks.append(
+                Truck(
+                    number=f'{truck_num}{truck_letter}',
+                    load_capacity=load_capacity,
+                    location_id=location_id
+                )
             )
-        )
     Truck.objects.bulk_create(trucks)
 
 
 def reverse_func(apps, schema_editor):
-    trucks = []
-    for _ in range(200):
-        truck_num = randint(1000, 9999)
-        truck_letter = chr(randint(ord('A'), ord('Z')))
-        load_capacity = randint(1, 10000)
-        location = choice(Location.objects.all())
-        trucks.append(
-            Truck(
-                number=f'{truck_num}{truck_letter}',
-                load_capacity=load_capacity,
-                location=location
-            )
-        )
-    Truck.objects.bulk_create(trucks)
+    Truck.objects.all().delete()
 
 
 class Migration(migrations.Migration):

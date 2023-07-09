@@ -4,7 +4,7 @@ import csv
 import django.core.validators
 from django.db import migrations, models
 
-from src.api.location.models import Location
+from api.location.models import Location
 
 
 def forward_func(apps, schema_editor):

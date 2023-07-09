@@ -1,8 +1,8 @@
 from rest_framework import viewsets, permissions
 from drf_spectacular.utils import extend_schema
 
-from src.api.cargo.models import Cargo
-from src.api.cargo.serializers import CargoSerializer
+from api.cargo.models import Cargo
+from api.cargo.serializers import CargoSerializer
 
 
 @extend_schema(

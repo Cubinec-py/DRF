@@ -1,7 +1,7 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 
-from src.api.location.models import Location
+from api.location.models import Location
 
 
 class Truck(models.Model):

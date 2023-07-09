@@ -1,10 +1,10 @@
 from rest_framework import serializers
 
-from src.api.cargo.models import Cargo
-from src.api.location.models import Location
-from src.api.location.serializers import ZipCodeField
-from src.api.truck.models import Truck
-from src.api.truck.serializers import TruckSerializer
+from api.cargo.models import Cargo
+from api.location.models import Location
+from api.location.serializers import ZipCodeField
+from api.truck.models import Truck
+from api.truck.serializers import TruckSerializer
 
 
 from geopy import distance

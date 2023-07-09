@@ -1,8 +1,8 @@
 from rest_framework import viewsets, permissions
 from drf_spectacular.utils import extend_schema
 
-from src.api.truck.models import Truck
-from src.api.truck.serializers import TruckSerializer
+from api.truck.models import Truck
+from api.truck.serializers import TruckSerializer
 
 
 @extend_schema(

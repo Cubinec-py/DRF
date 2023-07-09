@@ -13,5 +13,3 @@ RUN pip install -U pip && pip install --no-cache-dir --upgrade -r /drf_app/requi
 COPY . /drf_app
 
 EXPOSE 8001
-
-CMD ["python", "src/manage.py", "runserver", "0.0.0.0:8001", "--settings", "core.settings.dev"]
