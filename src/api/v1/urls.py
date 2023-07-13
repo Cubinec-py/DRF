@@ -6,9 +6,9 @@ from api.truck.views import TruckViewSet
 
 router = DefaultRouter()
 
-router.register('cargo', CargoViewSet, basename='cargo')
-router.register('truck', TruckViewSet, basename='truck')
+router.register("cargo", CargoViewSet, basename="cargo")
+router.register("truck", TruckViewSet, basename="truck")
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path("", include(router.urls)),
 ]

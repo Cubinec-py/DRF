@@ -11,12 +11,12 @@ class SignUpSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = UserModel.objects.create_user(
-            username=validated_data['username'],
-            password=validated_data['password'],
+            username=validated_data["username"],
+            password=validated_data["password"],
         )
 
         return user
 
     class Meta:
         model = UserModel
-        fields = ('id', 'username', 'password')
+        fields = ("id", "username", "password")

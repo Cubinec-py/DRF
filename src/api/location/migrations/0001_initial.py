@@ -9,59 +9,64 @@ from api.location.models import Location
 
 def forward_func(apps, schema_editor):
     locations = []
-    with open('src/uszips.csv', newline='') as file:
+    with open("uszips.csv", newline="") as file:
         spamreader = csv.DictReader(file)
         for row in spamreader:
             locations.append(
                 Location(
-                    city=row['city'],
-                    state=row['state_name'],
-                    zip=row['zip'],
-                    latitude=float(row['lat']),
-                    longitude=float(row['lng']),
+                    city=row["city"],
+                    state=row["state_name"],
+                    zip=row["zip"],
+                    latitude=float(row["lat"]),
+                    longitude=float(row["lng"]),
                 )
             )
     Location.objects.bulk_create(locations)
 
 
 def reverse_func(apps, schema_editor):
-    locations = []
-    with open('src/uszips.csv', newline='') as file:
-        spamreader = csv.DictReader(file)
-        for row in spamreader:
-            locations.append(
-                Location(
-                    city=row['city'],
-                    state=row['state_name'],
-                    zip=row['zip'],
-                    latitude=float(row['lat']),
-                    longitude=float(row['lng']),
-                )
-            )
-    Location.objects.bulk_create(locations)
+    Location.objects.all().delete()
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Location',
+            name="Location",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('city', models.CharField(max_length=100, verbose_name='City name')),
-                ('state', models.CharField(max_length=100, verbose_name='City state')),
-                ('zip', models.CharField(max_length=6, validators=[django.core.validators.RegexValidator('^[0-9]{6}$', 'Invalid zip code')], unique=True, verbose_name='City zip code')),
-                ('latitude', models.FloatField(verbose_name='Latitude')),
-                ('longitude', models.FloatField(verbose_name='Longitude')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("city", models.CharField(max_length=100, verbose_name="City name")),
+                ("state", models.CharField(max_length=100, verbose_name="City state")),
+                (
+                    "zip",
+                    models.CharField(
+                        max_length=6,
+                        validators=[
+                            django.core.validators.RegexValidator(
+                                "^[0-9]{6}$", "Invalid zip code"
+                            )
+                        ],
+                        unique=True,
+                        verbose_name="City zip code",
+                    ),
+                ),
+                ("latitude", models.FloatField(verbose_name="Latitude")),
+                ("longitude", models.FloatField(verbose_name="Longitude")),
             ],
             options={
-                'verbose_name': 'Location',
-                'verbose_name_plural': 'Locations',
+                "verbose_name": "Location",
+                "verbose_name_plural": "Locations",
             },
         ),
         migrations.RunPython(code=forward_func, reverse_code=reverse_func),

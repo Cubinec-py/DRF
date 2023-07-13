@@ -7,6 +7,9 @@ from api.location.models import Location
 
 @shared_task
 def change_truck_location():
-    for _ in range(Truck.objects.all().count()):
-        location_id = choice(Location.objects.all().values_list('id', flat=True))
-        Truck.objects.all().update(location_id=location_id)
+    locations = Location.objects.all().values_list("id", flat=True)
+    trucks = Truck.objects.all()
+    for truck in trucks:
+        location_id = choice(locations)
+        truck.location_id = location_id
+    Truck.objects.bulk_update(trucks, ["location_id"])

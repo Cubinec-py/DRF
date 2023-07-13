@@ -74,9 +74,9 @@ services:
       - "5577:5577"
     volumes:
       - .:/drf_app
+    env_file:
+      - src/.env.dev
     environment:
-      - CELERY_BROKER_URL=redis://redis_drf:6380/0
-      - CELERY_RESULT_BACKEND=redis://redis_drf:6380/0
       - FLOWER_PORT=5577
 
 networks:

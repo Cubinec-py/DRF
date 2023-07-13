@@ -161,4 +161,7 @@ cython_debug/
 src/.env
 src/.env.local
 src/.env.dev
+.env
+.env.local
+.env.dev
 celerybeat-schedule.db

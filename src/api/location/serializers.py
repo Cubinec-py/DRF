@@ -14,4 +14,4 @@ class ZipCodeField(serializers.CharField):
 class LocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Location
-        fields = '__all__'
+        fields = "__all__"
