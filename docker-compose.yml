@@ -1,0 +1,85 @@
+version: "3.8"
+
+services:
+  drf_app: &drf_app
+    container_name: drf_app
+    restart: on-failure
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    command: bash -c "
+        python src/manage.py migrate --settings=core.settings.dev
+        && python src/manage.py runserver 0.0.0.0:8001 --settings=core.settings.dev
+      "
+    ports:
+      - "8001:8001"
+    depends_on:
+      - db
+    networks:
+      - app_network
+    volumes:
+      - .:/drf_app
+
+  db:
+    container_name: db
+    restart: on-failure
+    image: postgres:15
+    expose:
+      - 5433
+    ports:
+      - "5433:5432"
+    networks:
+      - app_network
+    volumes:
+      - db:/var/lib/postgresql/data
+    env_file:
+      - src/.env.dev
+
+  redis_drf:
+    container_name: redis_drf
+    image: redis:7.2-rc1-alpine
+    restart: on-failure
+    command: --port 6380
+    ports:
+      - "6380:6380"
+    networks:
+      - app_network
+    expose:
+      - 6380
+
+  celery_drf:
+    <<: *drf_app
+    container_name: celery_drf
+    restart: always
+    networks:
+      - app_network
+    expose: []
+    ports: []
+    volumes:
+      - .:/drf_app
+    depends_on:
+      - redis_drf
+      - drf_app
+    command: ["docker/celery.sh"]
+
+  flower_drf:
+    image: mher/flower:latest
+    container_name: flower_drf
+    networks:
+      - app_network
+    depends_on:
+      - redis_drf
+      - celery_drf
+    ports:
+      - "5577:5577"
+    volumes:
+      - .:/drf_app
+    env_file:
+      - src/.env.dev
+    environment:
+      - FLOWER_PORT=5577
+
+networks:
+  app_network:
+volumes:
+  db:
